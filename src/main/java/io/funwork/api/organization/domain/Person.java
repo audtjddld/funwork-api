@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import io.funwork.api.organization.domain.support.command.PersonCommand;
 import lombok.Data;
 
 @Entity
@@ -43,5 +44,24 @@ public class Person implements Serializable {
 
     @OneToMany(mappedBy = "person")
     private List<DepartmentPerson> departmentPersons = new ArrayList<>();
+
+    public void addDepartment(DepartmentPerson departmentPerson) {
+        if(isNotBelongDepartment(departmentPerson)) {
+            this.departmentPersons.add(departmentPerson);
+        }
+    }
+
+    private boolean isNotBelongDepartment(DepartmentPerson departmentPerson) {
+        return departmentPerson != null && !departmentPersons.contains(departmentPerson);
+    }
+
+    public static Person createPerson(PersonCommand personCommand) {
+        Person person = new Person();
+        person.setEmail(personCommand.getEmail());
+        person.setPasswd(personCommand.getPasswd());
+        person.setPosition(personCommand.getPosition());
+        person.setSecurityGrade(SecurityGrade.NORMAL);
+        return person;
+    }
 
 }

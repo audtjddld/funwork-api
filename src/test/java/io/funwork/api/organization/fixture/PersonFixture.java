@@ -5,6 +5,7 @@ import io.funwork.api.organization.domain.SecurityGrade;
 
 public class PersonFixture {
 
+    private Long id;
     private String email;
     private String passwd;
     private String name;
@@ -13,6 +14,11 @@ public class PersonFixture {
 
     public static PersonFixture anPerson() {
         return new PersonFixture();
+    }
+
+    public PersonFixture withId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public PersonFixture withEmail(String email) {
@@ -42,6 +48,7 @@ public class PersonFixture {
 
     public Person build() {
         Person person = new Person();
+        person.setId(id);
         person.setEmail(email);
         person.setPasswd(passwd);
         person.setName(name);

@@ -1,4 +1,4 @@
-package io.funwork.api.organization.domain.support;
+package io.funwork.api.organization.domain.support.dto;
 
 import java.util.List;
 

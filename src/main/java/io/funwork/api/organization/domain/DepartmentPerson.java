@@ -7,12 +7,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import io.funwork.api.organization.domain.support.command.PersonCommand;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 @Entity
 @Getter @Setter
 public class DepartmentPerson {
+
+    public DepartmentPerson(Person person, Department department){
+        this.person = person;
+        this.department = department;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
