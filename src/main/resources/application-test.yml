@@ -3,10 +3,11 @@ spring:
   application:
     name: funwork-api:test
   datasource:
-    url: jdbc:h2:mem:clean;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:funwork;DB_CLOSE_ON_EXIT=FALSE
     driverClassName: org.h2.Driver
     username: sa
     password:
+    data: classpath:/import-test.sql
   h2:
     console:
       enabled: true

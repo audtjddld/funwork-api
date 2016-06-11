@@ -106,6 +106,36 @@ public class OrganizationIntegrationTest {
         assertThat(getDepartmentPerson(saveChildDept).get(0).getPerson().getName(), is("테스트"));
     }
 
+    @Test
+    @Transactional
+    public void test_get_dept_person_by_person() {
+
+        //given
+        //when
+        Person newPerson = personRepository.findOne(1L);
+
+        //then
+        assertThat(newPerson.getDepartmentPersons().size(), is(1));
+    }
+
+    @Test
+    @Transactional
+    public void test_get_dept_by_person() {
+
+        //given
+        Person newPerson = personRepository.findOne(1L);
+        Department newDepartment = new Department();
+        List<DepartmentPerson> departmentPersons = newPerson.getDepartmentPersons();
+
+        //when
+        if(departmentPersons.size() > 0)
+            newDepartment = departmentPersons.get(0).getDepartment();
+
+        //then
+        assertThat(newDepartment.getId(), is(2L));
+    }
+
+
     private Department saveParentDept() {
         return departmentRepository.save(parentDept);
     }
