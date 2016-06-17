@@ -52,38 +52,36 @@ public class OrganizationService {
 
         Department department = getDepartmentByPerson(person);
 
-        OrganizationTreeDto tree = new OrganizationTreeDto();
-
-        Department parentDept = department.getParentDept();
-
-        if (parentDept != null) {
-            tree.setTitle(parentDept.getName());
-            tree.setKey(String.valueOf(parentDept.getId()));
-            tree.setType("DEPT");
-
-            OrganizationTreeDto childTree = new OrganizationTreeDto();
-            childTree.setTitle(department.getName());
-            childTree.setKey(String.valueOf(department.getId()));
-            childTree.setType("DEPT");
-
-            OrganizationTreeDto personTree = new OrganizationTreeDto();
-            personTree.setTitle(person.getName());
-            personTree.setKey(String.valueOf(person.getId()));
-            personTree.setType("USER");
-
-            List<OrganizationTreeDto> personTrees = new ArrayList<>();
-            personTrees.add(personTree);
-            childTree.setChildren(personTrees);
-
-            List<OrganizationTreeDto> childTrees = new ArrayList<>();
-            childTrees.add(childTree);
-
-            tree.setChildren(childTrees);
-        }
-
+        OrganizationTreeDto tree = makeParentDepartmentTree(department, null);
         return tree;
     }
 
+    private OrganizationTreeDto makeParentDepartmentTree(Department department, OrganizationTreeDto tree) {
+
+        OrganizationTreeDto treeDto = new OrganizationTreeDto();
+        treeDto.setTitle(department.getName());
+        treeDto.setKey(String.valueOf(department.getId()));
+        treeDto.setType("DEPT");
+
+        List<OrganizationTreeDto> childs = new ArrayList<>();
+
+        department.getDepartmentPersons().stream().filter(departmentPerson -> departmentPerson.getPerson() != null).forEach(departmentPerson -> {
+            OrganizationTreeDto personDto = new OrganizationTreeDto();
+            Person person = departmentPerson.getPerson();
+            personDto.setTitle(person.getName());
+            personDto.setKey(String.valueOf(person.getId()));
+            personDto.setType("USER");
+            childs.add(personDto);
+        });
+
+        if(tree != null) childs.add(tree);
+        treeDto.setChildren(childs);
+
+        Department parentDept = department.getParentDept();
+        if(parentDept != null )
+            return makeParentDepartmentTree(parentDept, treeDto);
+        return treeDto;
+    }
 
     private Department getDepartmentByPerson(Person person) {
         if (person.getDepartmentPersons().size() > 0) {

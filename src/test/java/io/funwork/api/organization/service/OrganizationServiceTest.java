@@ -12,7 +12,6 @@ import io.funwork.api.organization.repository.DepartmentPersonRepository;
 import io.funwork.api.organization.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -140,6 +139,7 @@ public class OrganizationServiceTest {
         PersonFixture fixture = createPersonFixture();
         Person person = fixture.withId(1L).withName("테스트1-1사원").build();
         List<DepartmentPerson> departmentPersonList = createDepartmentPersonsFixture(cDepartment, person);
+        cDepartment.setDepartmentPersons(departmentPersonList);
         person.setDepartmentPersons(departmentPersonList);
         return person;
     }

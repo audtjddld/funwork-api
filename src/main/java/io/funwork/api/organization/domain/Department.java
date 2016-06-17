@@ -52,7 +52,7 @@ public class Department implements Serializable {
     private String useYn = "N";
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    private List<DepartmentPerson> departmentPersons;
+    private List<DepartmentPerson> departmentPersons = new ArrayList<>();
 
     /**
      * 자식부서 추가 및 부모부서로 등록.
