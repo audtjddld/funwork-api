@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class PersonCommand {
 
+    private Long personId;
     private String email;
     private String passwd;
     private String position;

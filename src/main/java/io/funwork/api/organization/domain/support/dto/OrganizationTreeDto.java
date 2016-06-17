@@ -1,5 +1,6 @@
 package io.funwork.api.organization.domain.support.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -11,5 +12,5 @@ public class OrganizationTreeDto {
     private String key;
     private String type;
     private String info;
-    private List<OrganizationTreeDto> children;
+    private List<OrganizationTreeDto> children = new ArrayList<>();
 }

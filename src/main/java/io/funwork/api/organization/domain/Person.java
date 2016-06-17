@@ -57,6 +57,7 @@ public class Person implements Serializable {
 
     public static Person createPerson(PersonCommand personCommand) {
         Person person = new Person();
+        person.setId(personCommand.getPersonId());
         person.setEmail(personCommand.getEmail());
         person.setPasswd(personCommand.getPasswd());
         person.setPosition(personCommand.getPosition());
