@@ -114,7 +114,9 @@ public class OrganizationServiceTest {
         //then
         log.info(treeDto.toString());
         verify(personRepository).findOne(1L);
-        assertNotNull(treeDto);
+        assertThat(treeDto.getTitle(), is("테스트1"));
+        assertThat(treeDto.getChildren().get(0).getTitle(), is("테스트1-1"));
+        assertThat(treeDto.getChildren().get(0).getChildren().get(0).getTitle(), is("테스트1-1사원"));
     }
 
     private PersonCommand createPersonCommandFixture() {

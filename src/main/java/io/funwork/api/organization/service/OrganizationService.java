@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class OrganizationService {
@@ -51,36 +49,32 @@ public class OrganizationService {
         person = personRepository.findOne(person.getId());
 
         Department department = getDepartmentByPerson(person);
-
-        OrganizationTreeDto tree = makeParentDepartmentTree(department, null);
+        OrganizationTreeDto tree = makeTree(department, null);
         return tree;
     }
 
-    private OrganizationTreeDto makeParentDepartmentTree(Department department, OrganizationTreeDto tree) {
+    private OrganizationTreeDto makeTree(Department department, OrganizationTreeDto childTree) {
+        OrganizationTreeDto treeDto = OrganizationTreeDto.createTree(department);
+        treeDto.setChildren(childs(department, childTree));
+        Department parentDept = department.getParentDept();
+        if (parentDept != null) return makeTree(parentDept, treeDto);
+        return treeDto;
+    }
 
-        OrganizationTreeDto treeDto = new OrganizationTreeDto();
-        treeDto.setTitle(department.getName());
-        treeDto.setKey(String.valueOf(department.getId()));
-        treeDto.setType("DEPT");
-
+    private List<OrganizationTreeDto> childs(Department department, OrganizationTreeDto tree) {
         List<OrganizationTreeDto> childs = new ArrayList<>();
 
-        department.getDepartmentPersons().stream().filter(departmentPerson -> departmentPerson.getPerson() != null).forEach(departmentPerson -> {
-            OrganizationTreeDto personDto = new OrganizationTreeDto();
-            Person person = departmentPerson.getPerson();
-            personDto.setTitle(person.getName());
-            personDto.setKey(String.valueOf(person.getId()));
-            personDto.setType("USER");
-            childs.add(personDto);
-        });
+        department.getDepartmentPersons()
+                .stream()
+                .filter(departmentPerson -> departmentPerson.getPerson() != null)
+                .forEach(departmentPerson -> {
+                    Person person = departmentPerson.getPerson();
+                    OrganizationTreeDto personDto = OrganizationTreeDto.createTree(person);
+                    childs.add(personDto);
+                });
 
-        if(tree != null) childs.add(tree);
-        treeDto.setChildren(childs);
-
-        Department parentDept = department.getParentDept();
-        if(parentDept != null )
-            return makeParentDepartmentTree(parentDept, treeDto);
-        return treeDto;
+        if (tree != null) childs.add(tree);
+        return childs;
     }
 
     private Department getDepartmentByPerson(Person person) {
