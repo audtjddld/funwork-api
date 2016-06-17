@@ -6,6 +6,7 @@ import io.funwork.api.organization.domain.Person;
 import io.funwork.api.organization.domain.SecurityGrade;
 import io.funwork.api.organization.domain.support.command.PersonCommand;
 import io.funwork.api.organization.domain.support.dto.OrganizationTreeDto;
+import io.funwork.api.organization.exception.NotFoundDepartment;
 import io.funwork.api.organization.fixture.DepartmentFixture;
 import io.funwork.api.organization.fixture.PersonFixture;
 import io.funwork.api.organization.repository.DepartmentPersonRepository;
@@ -117,6 +118,20 @@ public class OrganizationServiceTest {
         assertThat(treeDto.getTitle(), is("테스트1"));
         assertThat(treeDto.getChildren().get(0).getTitle(), is("테스트1-1"));
         assertThat(treeDto.getChildren().get(0).getChildren().get(0).getTitle(), is("테스트1-1사원"));
+    }
+
+    @Test(expected = NotFoundDepartment.class)
+    public void test_get_tree_by_person_for_exception() throws Exception {
+        //given
+        PersonCommand personCommand = new PersonCommand();
+        personCommand.setPersonId(1L);
+        when(personRepository.findOne(1L)).thenReturn(expectPerson);
+
+        //when
+        OrganizationTreeDto treeDto = organizationService.getTreeByPerson(personCommand);
+
+        //then
+        verify(personRepository).findOne(1L);
     }
 
     private PersonCommand createPersonCommandFixture() {
