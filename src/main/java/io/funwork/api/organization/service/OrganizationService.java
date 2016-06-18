@@ -45,11 +45,9 @@ public class OrganizationService {
     }
 
     @Transactional
-    public OrganizationTreeDto getTreeByPerson(PersonCommand personCommand) {
+    public OrganizationTreeDto getTreeByPerson(Long id) {
 
-        Person person = Person.createPerson(personCommand);
-        person = personRepository.findOne(person.getId());
-
+        Person person = personRepository.findOne(id);
         Department department = getDepartmentByPerson(person);
         if(department == null) throw new NotFoundDepartment();
         OrganizationTreeDto tree = makeTree(department, null);

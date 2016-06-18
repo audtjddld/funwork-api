@@ -105,12 +105,10 @@ public class OrganizationServiceTest {
     public void test_get_tree_by_person() throws Exception {
 
         //given
-        PersonCommand personCommand = new PersonCommand();
-        personCommand.setPersonId(1L);
         when(personRepository.findOne(1L)).thenReturn(treeExpectPerson);
 
         //when
-        OrganizationTreeDto treeDto = organizationService.getTreeByPerson(personCommand);
+        OrganizationTreeDto treeDto = organizationService.getTreeByPerson(1L);
 
         //then
         log.info(treeDto.toString());
@@ -123,12 +121,10 @@ public class OrganizationServiceTest {
     @Test(expected = NotFoundDepartment.class)
     public void test_get_tree_by_person_for_exception() throws Exception {
         //given
-        PersonCommand personCommand = new PersonCommand();
-        personCommand.setPersonId(1L);
         when(personRepository.findOne(1L)).thenReturn(expectPerson);
 
         //when
-        OrganizationTreeDto treeDto = organizationService.getTreeByPerson(personCommand);
+        OrganizationTreeDto treeDto = organizationService.getTreeByPerson(1L);
 
         //then
         verify(personRepository).findOne(1L);
