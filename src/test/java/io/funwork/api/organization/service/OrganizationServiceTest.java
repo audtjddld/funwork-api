@@ -7,6 +7,7 @@ import io.funwork.api.organization.domain.SecurityGrade;
 import io.funwork.api.organization.domain.support.command.PersonCommand;
 import io.funwork.api.organization.domain.support.dto.OrganizationTreeDto;
 import io.funwork.api.organization.exception.NotFoundDepartment;
+import io.funwork.api.organization.exception.NotFoundPerson;
 import io.funwork.api.organization.fixture.DepartmentFixture;
 import io.funwork.api.organization.fixture.PersonFixture;
 import io.funwork.api.organization.repository.DepartmentPersonRepository;
@@ -130,7 +131,7 @@ public class OrganizationServiceTest {
         verify(personRepository).findOne(1L);
     }
 
-    @Test
+    @Test(expected = NotFoundPerson.class)
     public void test_get_tree_by_person_but_person_is_null() throws Exception {
         //given
         when(personRepository.findOne(1L)).thenReturn(null);

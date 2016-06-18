@@ -43,4 +43,15 @@ public class OrganizationControllerIntegrationTest {
                 .then().statusCode(HttpStatus.SC_OK).body(containsString("테스트1-1"));
     }
 
+    @Test
+    public void test_get_tree_by_person_but_person_is_null() throws Exception {
+
+        given().contentType(CONTENT_TYPE)
+                .when().get(URI+"/tree/9999")
+                .then().statusCode(HttpStatus.SC_BAD_REQUEST);
+
+    }
+
+
+
 }
