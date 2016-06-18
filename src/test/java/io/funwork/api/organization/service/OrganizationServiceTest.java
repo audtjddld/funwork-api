@@ -130,6 +130,18 @@ public class OrganizationServiceTest {
         verify(personRepository).findOne(1L);
     }
 
+    @Test
+    public void test_get_tree_by_person_but_person_is_null() throws Exception {
+        //given
+        when(personRepository.findOne(1L)).thenReturn(null);
+
+        //when
+        OrganizationTreeDto treeDto = organizationService.getTreeByPerson(1L);
+
+        //then
+        verify(personRepository).findOne(1L);
+    }
+
     private PersonCommand createPersonCommandFixture() {
         PersonCommand personCommand = new PersonCommand();
         personCommand.setEmail(givenPerson.getEmail());
