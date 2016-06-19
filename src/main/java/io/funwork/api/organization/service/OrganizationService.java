@@ -70,11 +70,7 @@ public class OrganizationService {
         department.getDepartmentPersons()
                 .stream()
                 .filter(departmentPerson -> departmentPerson.getPerson() != null)
-                .forEach(departmentPerson -> {
-                    Person person = departmentPerson.getPerson();
-                    OrganizationTreeDto personDto = OrganizationTreeDto.createTree(person);
-                    childs.add(personDto);
-                });
+                .forEach(departmentPerson -> childs.add(OrganizationTreeDto.createTree(departmentPerson.getPerson())));
 
         if (tree != null) childs.add(tree);
         return childs;
