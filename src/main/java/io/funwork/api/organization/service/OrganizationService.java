@@ -57,7 +57,7 @@ public class OrganizationService {
     }
 
     private OrganizationTreeDto makeTree(Department department, OrganizationTreeDto childTree) {
-        OrganizationTreeDto treeDto = OrganizationTreeDto.createTree(department);
+        OrganizationTreeDto treeDto = new OrganizationTreeDto(department);
         treeDto.setChildren(childs(department, childTree));
         Department parentDept = department.getParentDept();
         if (parentDept != null) return makeTree(parentDept, treeDto);
@@ -70,7 +70,7 @@ public class OrganizationService {
         department.getDepartmentPersons()
                 .stream()
                 .filter(departmentPerson -> departmentPerson.getPerson() != null)
-                .forEach(departmentPerson -> childs.add(OrganizationTreeDto.createTree(departmentPerson.getPerson(), department.getId())));
+                .forEach(departmentPerson -> childs.add(new OrganizationTreeDto(departmentPerson.getPerson(), department.getId())));
 
         if (tree != null) childs.add(tree);
         return childs;
