@@ -14,3 +14,7 @@ insert into person (id, email, name, passwd, position, security_grade) VALUES (3
 insert into department_person (id, dept_id, person_id) VALUES (1, 2, 1);
 insert into department_person (id, dept_id, person_id) VALUES (2, 3, 2);
 insert into department_person (id, dept_id, person_id) VALUES (3, 3, 3);
+
+insert into sns (id, person_id, contents, create_date, use_yn, dept_id, like_count) values (1, 'urosaria', 'testest11', '2016-06-16','Y', 2, 1);
+insert into sns (id, person_id, contents, create_date, use_yn, dept_id, like_count) values (2, 'urosaria', 'testest22', '2016-06-16','Y', 2, 1);
+insert into sns (id, person_id, contents, create_date, use_yn, dept_id, like_count) values (3, 'urosaria', 'testest33', '2016-06-16','Y', 2, 1);

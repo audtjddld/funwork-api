@@ -1,7 +1,15 @@
 package io.funwork.api.sns.domain.support.command;
 
-/**
- * Created by jinovice on 2016. 6. 19..
- */
+import lombok.Data;
+
+@Data
 public class SnsCommand {
+  private Long id;
+
+  private String createDate;
+
+  private String contents;
+
+  private String personId;
+
 }

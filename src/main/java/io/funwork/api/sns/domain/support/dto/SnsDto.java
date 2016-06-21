@@ -13,15 +13,15 @@ public class SnsDto {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
-  private String person_id;
+  private String personId;
 
-  private String create_date;
+  private String createDate;
 
   private String contents;
 
   private String useYn = "N";
 
-  private String dept_id;
+  private String deptId;
 
-  private int like_count;
+  private int likeCount;
 }

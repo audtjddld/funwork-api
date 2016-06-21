@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import io.funwork.api.sns.domain.support.command.SnsCommand;
 import lombok.Data;
 
 @Entity
@@ -18,17 +19,25 @@ public class Sns implements Serializable {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
-  private String person_id;
+  private String personId;
 
-  private String create_date;
+  private String createDate;
 
   private String contents;
 
   @NotNull
   private String useYn = "N";
 
-  private String dept_id;
+  private String deptId;
 
-  private int like_count;
+  private int likeCount;
 
+  public static Sns createSns(SnsCommand snsCommand) {
+    Sns sns = new Sns();
+    sns.setId(snsCommand.getId());
+    sns.setContents(snsCommand.getContents());
+    sns.setCreateDate(snsCommand.getCreateDate());
+    sns.setPersonId(snsCommand.getPersonId());
+    return sns;
+  }
 }
