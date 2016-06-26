@@ -42,7 +42,7 @@ public class SnsControllerTest {
 
     given().contentType(CONTENT_TYPE)
         .when().get(URI + "/list")
-        .then().statusCode(HttpStatus.SC_OK).body(containsString("testest11"));
+        .then().statusCode(HttpStatus.SC_OK).body(containsString("test.jpg"));
   }
 
 }
