@@ -1,5 +1,10 @@
 package io.funwork.api.sns.fixture;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.funwork.api.organization.domain.DepartmentPerson;
+import io.funwork.api.sns.domain.FileSns;
 import io.funwork.api.sns.domain.Sns;
 
 public class SnsFixture {
@@ -11,6 +16,8 @@ public class SnsFixture {
   private String useYn = "N";
   private String deptId;
   private int likeCount;
+  private List<FileSns> fileSns = new ArrayList<>();
+
 
   public static SnsFixture anSns() {
     return new SnsFixture();
@@ -51,6 +58,11 @@ public class SnsFixture {
     return this;
   }
 
+  public SnsFixture withFileSns(List<FileSns> fileSns) {
+    this.fileSns = fileSns;
+    return this;
+  }
+
   public Sns build() {
     Sns sns = new Sns();
     sns.setId(id);
@@ -60,6 +72,8 @@ public class SnsFixture {
     sns.setDeptId(deptId);
     sns.setLikeCount(likeCount);
     sns.setUseYn(useYn);
+    sns.setFileSnsList(fileSns);
+
     return sns;
   }
 }

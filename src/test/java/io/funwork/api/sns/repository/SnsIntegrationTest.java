@@ -8,14 +8,19 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
 import java.util.List;
 
 import io.funwork.FunworkApiApplicationTests;
+import io.funwork.api.organization.domain.Department;
+import io.funwork.api.organization.domain.DepartmentPerson;
+import io.funwork.api.sns.domain.FileSns;
 import io.funwork.api.sns.domain.Sns;
 import io.funwork.api.sns.fixture.SnsFixture;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import lombok.extern.slf4j.Slf4j;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FunworkApiApplicationTests.class)
@@ -25,6 +30,9 @@ public class SnsIntegrationTest {
   @Autowired
   private SnsRepository snsRepository;
 
+  @Autowired
+  private FileSnsRepository fileSnsRepository;
+
   private Sns sns;
   private Sns sns2;
   private Sns sns3;
@@ -32,7 +40,7 @@ public class SnsIntegrationTest {
   @Before
   public void setUp() {
     sns = createSnsFixture()
-        .withContents("testest11")
+        .withContents("testest222")
         .withId(1L)
         .build();
     sns2 = createSnsFixture()
@@ -52,7 +60,8 @@ public class SnsIntegrationTest {
     List<Sns> snsList = snsRepository.findAll();
 
     //then
-    assertThat(snsList.get(0).getContents(), is("testest11"));
+    assertThat(snsList.get(0).getContents(), is("안녕하세요, 테스트1입니다."));
+    assertThat(snsList.get(0).getFileSnsList().get(0).getFileNm(), is("test.jpg"));
 
   }
 
@@ -63,11 +72,27 @@ public class SnsIntegrationTest {
     //when
     Sns saveSns = saveSns();
 
+    FileSns fileSns = saveFileSns(saveSns);
 
-    System.out.println("saveSns.getId()::" + saveSns.getId());
     //then
     assertThat(saveSns.getId(), is(1L));
+    assertThat(fileSns.getFileNm(), is("bbb.jpg"));
 
+  }
+
+
+  private FileSns saveFileSns(Sns sns) {
+    FileSns fileSns = new FileSns();
+    fileSns.setId(1L);
+    fileSns.setFileOrder(1);
+    fileSns.setSns(sns);
+    fileSns.setFileNm("bbb.jpg");
+    fileSns.setPath("/aaa/");
+    fileSns.setUseYn("Y");
+
+    fileSnsRepository.save(fileSns);
+
+    return fileSns;
   }
 
   private SnsFixture createSnsFixture() {

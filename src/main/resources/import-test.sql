@@ -15,6 +15,10 @@ insert into department_person (id, dept_id, person_id) VALUES (1, 2, 1);
 insert into department_person (id, dept_id, person_id) VALUES (2, 3, 2);
 insert into department_person (id, dept_id, person_id) VALUES (3, 3, 3);
 
-insert into sns (id, person_id, contents, create_date, use_yn, dept_id, like_count) values (1, 'urosaria', 'testest11', '2016-06-16','Y', 2, 1);
-insert into sns (id, person_id, contents, create_date, use_yn, dept_id, like_count) values (2, 'urosaria', 'testest22', '2016-06-16','Y', 2, 1);
-insert into sns (id, person_id, contents, create_date, use_yn, dept_id, like_count) values (3, 'urosaria', 'testest33', '2016-06-16','Y', 2, 1);
+insert into sns (sns_id, person_id, contents, create_date, use_yn, dept_id, like_count) values (1, 'urosaria', '안녕하세요, 테스트1입니다.', '2016-06-16','Y', 2, 1);
+insert into sns (sns_id, person_id, contents, create_date, use_yn, dept_id, like_count) values (2, 'urosaria', '안녕하세요, 테스트2입니다.', '2016-06-16','Y', 2, 1);
+insert into sns (sns_id, person_id, contents, create_date, use_yn, dept_id, like_count) values (3, 'urosaria', '안녕하세요, 테스트3입니다.', '2016-06-16','Y', 2, 1);
+
+insert into file_sns(file_id, path, file_nm, use_yn, file_order, sns_id) values (1, '/test/', 'test.jpg', 'Y', 1, 1);
+insert into file_sns(file_id, path, file_nm, use_yn, file_order, sns_id) values (2, '/test/', 'test2.jpg', 'Y', 2, 2);
+insert into file_sns(file_id, path, file_nm, use_yn, file_order, sns_id) values (3, '/test/', 'test3.jpg', 'Y', 3, 3);
