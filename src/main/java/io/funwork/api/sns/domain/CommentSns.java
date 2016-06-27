@@ -55,7 +55,7 @@ public class CommentSns {
 
 
     System.out.println("commnet:" + commentSns.getId());
-    System.out.println("commnet:" + commentSns.getSns().getId());
+    System.out.println("commnet:" + commentSns.getSns().getId()); // 이거 에러날 코드 getSns가 null 이면..
 
     return commentSns;
   }

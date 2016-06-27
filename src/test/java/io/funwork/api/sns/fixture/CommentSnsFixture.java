@@ -58,6 +58,7 @@ public class CommentSnsFixture {
     commentSns.setContents(contents);
     commentSns.setCreateDate(createDate);
     commentSns.setPersonId(personId);
+    commentSns.setSns(sns);
     //sns.setFileSnsList(fileSns);
 
     return commentSns;

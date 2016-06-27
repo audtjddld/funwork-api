@@ -135,17 +135,16 @@ public class SnsServiceTest {
 
     //given
     CommentSnsCommand commentSnsCommand = createCommentSnsCommandFixture();
-
     Sns sns = new Sns();
     sns.setId(1L);
     commentSnsCommand.setSns(sns);
+    when(commentSnsRepository.save(any(CommentSns.class))).thenReturn(expectCommentSns);
 
     //when
-    when(commentSnsRepository.save(givenCommentSns)).thenReturn(expectCommentSns);
     List<CommentSns> saveCommentSns = snsService.saveCommentSns(commentSnsCommand);
 
     //then
-    verify(commentSnsRepository).save(givenCommentSns);
+    verify(commentSnsRepository).save(any(CommentSns.class));
 
     //assertThat(saveCommentSns.get(0).getId(), is(expectCommentSns.getId()));
 
