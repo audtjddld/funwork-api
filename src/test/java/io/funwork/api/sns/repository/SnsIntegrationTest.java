@@ -14,6 +14,7 @@ import java.util.List;
 import io.funwork.FunworkApiApplicationTests;
 import io.funwork.api.organization.domain.Department;
 import io.funwork.api.organization.domain.DepartmentPerson;
+import io.funwork.api.sns.domain.CommentSns;
 import io.funwork.api.sns.domain.FileSns;
 import io.funwork.api.sns.domain.Sns;
 import io.funwork.api.sns.fixture.SnsFixture;
@@ -32,6 +33,9 @@ public class SnsIntegrationTest {
 
   @Autowired
   private FileSnsRepository fileSnsRepository;
+
+  @Autowired
+  private CommentSnsRepository commentSnsRepository;
 
   private Sns sns;
   private Sns sns2;
@@ -62,6 +66,7 @@ public class SnsIntegrationTest {
     //then
     assertThat(snsList.get(0).getContents(), is("안녕하세요, 테스트1입니다."));
     assertThat(snsList.get(0).getFileSnsList().get(0).getFileNm(), is("test.jpg"));
+    assertThat(snsList.get(0).getCommentSnsList().get(0).getContents(), is("댓글테스트1"));
 
   }
 
@@ -80,6 +85,20 @@ public class SnsIntegrationTest {
 
   }
 
+  @Test
+  public void test_add_commnet_sns() throws Exception {
+
+    //given
+    //when
+    Sns saveSns = saveSns();
+
+    CommentSns saveCommentSns = saveCommentSns(saveSns);
+
+    //then
+    assertThat(saveSns.getId(), is(1L));
+    assertThat(saveCommentSns.getContents(), is("댓글1"));
+
+  }
 
   private FileSns saveFileSns(Sns sns) {
     FileSns fileSns = new FileSns();
@@ -89,10 +108,21 @@ public class SnsIntegrationTest {
     fileSns.setFileNm("bbb.jpg");
     fileSns.setPath("/aaa/");
     fileSns.setUseYn("Y");
-
     fileSnsRepository.save(fileSns);
 
     return fileSns;
+  }
+
+  private CommentSns saveCommentSns(Sns sns) {
+    CommentSns commentSns = new CommentSns();
+    commentSns.setId(1L);
+    commentSns.setContents("댓글1");
+    commentSns.setCreateDate("2016-06-27");
+    commentSns.setPersonId("test1");
+    commentSns.setUseYn("Y");
+    commentSnsRepository.save(commentSns);
+
+    return commentSns;
   }
 
   private SnsFixture createSnsFixture() {

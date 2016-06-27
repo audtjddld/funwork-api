@@ -1,10 +1,10 @@
 package io.funwork.api.sns.domain.support.command;
 
-import io.funwork.api.sns.domain.FileSns;
+import io.funwork.api.sns.domain.Sns;
 import lombok.Data;
 
 @Data
-public class SnsCommand {
+public class CommentSnsCommand {
 
   private Long id;
 
@@ -14,6 +14,8 @@ public class SnsCommand {
 
   private String personId;
 
-  private FileSns fileSns;
+  private Long snsId;
+
+  private Sns sns;
 
 }
