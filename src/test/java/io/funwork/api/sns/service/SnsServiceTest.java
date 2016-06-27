@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.xml.stream.events.Comment;
 
+import io.funwork.api.organization.domain.DepartmentPerson;
 import io.funwork.api.sns.domain.CommentSns;
 import io.funwork.api.sns.domain.FileSns;
 import io.funwork.api.sns.domain.Sns;
@@ -133,33 +134,18 @@ public class SnsServiceTest {
   public void test_add_comment_sns() throws Exception{
 
     //given
-    SnsCommand snsCommand = createSnsCommandFixture();
-    when(snsRepository.save(givenSns)).thenReturn(expectSns);
-    Sns saveSns = snsService.saveSns(snsCommand);
-    log.info(saveSns.toString());
+    CommentSnsCommand commentSnsCommand = createCommentSnsCommandFixture();
 
-//
-//    Sns sns = new Sns();
-//    sns.setId(1L);
-//
-//    CommentSns expectCommentSns = new CommentSns();
-//    expectCommentSns.setId(1L);
-//    expectCommentSns.setSns(sns);
-//    expectCommentSns.setContents("댓글1");
-//    expectCommentSns.setCreateDate("2016-06-27");
-//
-//    when(commentSnsRepository.save(any(CommentSns.class))).thenReturn(expectCommentSns);
-
-
-    //when(commentSnsRepository.save(givenCommentSns)).thenReturn(expectCommentSns);
+    Sns sns = new Sns();
+    sns.setId(1L);
+    commentSnsCommand.setSns(sns);
 
     //when
-    CommentSnsCommand commentSnsCommand = createCommentSnsCommandFixture();
-    commentSnsCommand.setSns(saveSns);
+    when(commentSnsRepository.save(givenCommentSns)).thenReturn(expectCommentSns);
     List<CommentSns> saveCommentSns = snsService.saveCommentSns(commentSnsCommand);
 
     //then
-    verify(commentSnsRepository).save(any(CommentSns.class));
+    verify(commentSnsRepository).save(givenCommentSns);
 
     //assertThat(saveCommentSns.get(0).getId(), is(expectCommentSns.getId()));
 
