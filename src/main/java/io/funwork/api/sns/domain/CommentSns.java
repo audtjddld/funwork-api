@@ -3,7 +3,6 @@ package io.funwork.api.sns.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import io.funwork.api.sns.domain.support.command.CommentSnsCommand;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,10 +19,6 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 public class CommentSns {
-
-  //public CommentSns(Sns sns){
-  //  this.sns = sns;
-  //}
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -47,15 +41,11 @@ public class CommentSns {
   public static CommentSns createCommentSns(CommentSnsCommand commentSnsCommand) {
     CommentSns commentSns = new CommentSns();
     //commentSns.setId(commentSnsCommand.getId());
-    commentSns.setId(1L);
+    //commentSns.setId(1L);
     commentSns.setContents(commentSnsCommand.getContents());
     commentSns.setCreateDate(commentSnsCommand.getCreateDate());
     commentSns.setPersonId(commentSnsCommand.getPersonId());
     commentSns.setSns(commentSnsCommand.getSns());
-
-
-    System.out.println("commnet:" + commentSns.getId());
-    System.out.println("commnet:" + commentSns.getSns().getId()); // 이거 에러날 코드 getSns가 null 이면..
 
     return commentSns;
   }

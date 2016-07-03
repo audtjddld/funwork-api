@@ -46,6 +46,9 @@ public class Sns implements Serializable {
   @OneToMany(mappedBy = "sns", fetch = FetchType.EAGER)
   private List<CommentSns> commentSnsList = new ArrayList<>();
 
+  @OneToMany(mappedBy = "sns", fetch = FetchType.EAGER)
+  private List<LikeSns> likeSnsList = new ArrayList<>();
+
   public void addCommentSns(CommentSns commentSns) {
     if (isNotBelongCommentSns(commentSns)) {
       this.commentSnsList.add(commentSns);
@@ -55,6 +58,17 @@ public class Sns implements Serializable {
   private boolean isNotBelongCommentSns(CommentSns commentSns) {
     return commentSns != null && !commentSnsList.contains(commentSns);
   }
+
+  public void addLikeSns(LikeSns likeSns) {
+    if (isNotBelongLikeSns(likeSns)) {
+      this.likeSnsList.add(likeSns);
+    }
+  }
+
+  private boolean isNotBelongLikeSns(LikeSns likeSns) {
+    return likeSns != null && !likeSnsList.contains(likeSns);
+  }
+
 
   public void addFileSns(FileSns fileSns) {
     if (isNotBelongFileSns(fileSns)) {

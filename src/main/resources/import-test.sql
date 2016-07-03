@@ -27,3 +27,4 @@ insert into comment_sns(comment_id, contents, person_id, create_date, use_yn, sn
 insert into comment_sns(comment_id, contents, person_id, create_date, use_yn, sns_id) values (2, '댓글테스트2', 'test2', '2016-06-26', 'Y', 1);
 insert into comment_sns(comment_id, contents, person_id, create_date, use_yn, sns_id) values (3, '댓글테스트3', 'test3', '2016-06-26', 'Y', 1);
 
+insert into like_sns(like_id, person_id, create_date, use_yn, sns_id) values (1, 'urosaria', '2016-06-26', 'Y', 1);

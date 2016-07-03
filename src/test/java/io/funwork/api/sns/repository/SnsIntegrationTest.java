@@ -16,11 +16,13 @@ import io.funwork.api.organization.domain.Department;
 import io.funwork.api.organization.domain.DepartmentPerson;
 import io.funwork.api.sns.domain.CommentSns;
 import io.funwork.api.sns.domain.FileSns;
+import io.funwork.api.sns.domain.LikeSns;
 import io.funwork.api.sns.domain.Sns;
 import io.funwork.api.sns.fixture.SnsFixture;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
 import lombok.extern.slf4j.Slf4j;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,6 +39,9 @@ public class SnsIntegrationTest {
   @Autowired
   private CommentSnsRepository commentSnsRepository;
 
+  @Autowired
+  private LikeSnsRepository likeSnsRepository;
+
   private Sns sns;
   private Sns sns2;
   private Sns sns3;
@@ -44,15 +49,15 @@ public class SnsIntegrationTest {
   @Before
   public void setUp() {
     sns = createSnsFixture()
-        .withContents("testest222")
+        .withContents("안녕하세요, 테스트1입니다.")
         .withId(1L)
         .build();
     sns2 = createSnsFixture()
-        .withContents("testest22")
+        .withContents("안녕하세요, 테스트2입니다.")
         .withId(2L)
         .build();
     sns3 = createSnsFixture()
-        .withContents("testest22")
+        .withContents("안녕하세요, 테스트3입니다.")
         .withId(3L)
         .build();
   }
@@ -100,6 +105,21 @@ public class SnsIntegrationTest {
 
   }
 
+  @Test
+  public void test_add_like_sns() throws Exception {
+
+    //given
+    //when
+    Sns saveSns = saveSns();
+
+    LikeSns saveLikeSns = saveLikeSns(saveSns);
+
+    //then
+    assertThat(saveSns.getId(), is(1L));
+    assertThat(saveLikeSns.getSns().getId(), is(1L));
+
+  }
+
   private FileSns saveFileSns(Sns sns) {
     FileSns fileSns = new FileSns();
     fileSns.setId(1L);
@@ -115,14 +135,26 @@ public class SnsIntegrationTest {
 
   private CommentSns saveCommentSns(Sns sns) {
     CommentSns commentSns = new CommentSns();
-    commentSns.setId(1L);
+    //commentSns.setId(1L);
     commentSns.setContents("댓글1");
     commentSns.setCreateDate("2016-06-27");
     commentSns.setPersonId("test1");
     commentSns.setUseYn("Y");
+    commentSns.setSns(sns);
     commentSnsRepository.save(commentSns);
 
     return commentSns;
+  }
+
+  private LikeSns saveLikeSns(Sns sns) {
+    LikeSns likeSns = new LikeSns();
+    likeSns.setCreateDate("2016-06-27");
+    likeSns.setPersonId("test1");
+    likeSns.setUseYn("Y");
+    likeSns.setSns(sns);
+    likeSnsRepository.save(likeSns);
+
+    return likeSns;
   }
 
   private SnsFixture createSnsFixture() {

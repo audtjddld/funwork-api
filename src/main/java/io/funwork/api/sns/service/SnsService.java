@@ -10,11 +10,14 @@ import io.funwork.api.organization.domain.DepartmentPerson;
 import io.funwork.api.organization.domain.Person;
 import io.funwork.api.sns.domain.CommentSns;
 import io.funwork.api.sns.domain.FileSns;
+import io.funwork.api.sns.domain.LikeSns;
 import io.funwork.api.sns.domain.Sns;
 import io.funwork.api.sns.domain.support.command.CommentSnsCommand;
+import io.funwork.api.sns.domain.support.command.LikeSnsCommand;
 import io.funwork.api.sns.domain.support.command.SnsCommand;
 import io.funwork.api.sns.repository.CommentSnsRepository;
 import io.funwork.api.sns.repository.FileSnsRepository;
+import io.funwork.api.sns.repository.LikeSnsRepository;
 import io.funwork.api.sns.repository.SnsRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,12 +34,14 @@ public class SnsService {
   @Autowired
   private CommentSnsRepository commentSnsRepository;
 
+  @Autowired
+  private LikeSnsRepository likeSnsRepository;
+
   public List<Sns> getSnsList(){
     return snsRepository.findAll();
   }
 
   public Sns saveSns(SnsCommand snsCommand){
-
     Sns sns = Sns.createSns(snsCommand);
     sns = snsRepository.save(sns);
 
@@ -54,21 +59,18 @@ public class SnsService {
     return fileSnsRepository.save(fileSns);
   }
 
-  public List<CommentSns> saveCommentSns(CommentSnsCommand commentSnsCommand){
-
+  public CommentSns saveCommentSns(CommentSnsCommand commentSnsCommand){
     CommentSns commentSns = CommentSns.createCommentSns(commentSnsCommand);
-
-    log.info("등록 전 :" + commentSns);
     commentSns = commentSnsRepository.save(commentSns);
-    log.info("등록 후 :" + commentSns);
 
-    Long snsId = commentSns.getSns().getId();
-
-    return getCommentSnsList(snsId);
+    return commentSns;
   }
 
-  public List<CommentSns> getCommentSnsList(Long snsId){
-    return commentSnsRepository.findBySnsId(snsId);
+  public LikeSns saveLikeSns(LikeSnsCommand likeSnsCommand){
+    LikeSns likeSns = LikeSns.createLikeSns(likeSnsCommand);
+    likeSns = likeSnsRepository.save(likeSns);
+
+    return likeSns;
   }
 
 }

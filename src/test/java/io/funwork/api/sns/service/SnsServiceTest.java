@@ -11,18 +11,19 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.stream.events.Comment;
-
-import io.funwork.api.organization.domain.DepartmentPerson;
 import io.funwork.api.sns.domain.CommentSns;
 import io.funwork.api.sns.domain.FileSns;
+import io.funwork.api.sns.domain.LikeSns;
 import io.funwork.api.sns.domain.Sns;
 import io.funwork.api.sns.domain.support.command.CommentSnsCommand;
+import io.funwork.api.sns.domain.support.command.LikeSnsCommand;
 import io.funwork.api.sns.domain.support.command.SnsCommand;
+import io.funwork.api.sns.fixture.LikeSnsFixture;
 import io.funwork.api.sns.fixture.SnsFixture;
 import io.funwork.api.sns.fixture.CommentSnsFixture;
 import io.funwork.api.sns.repository.CommentSnsRepository;
 import io.funwork.api.sns.repository.FileSnsRepository;
+import io.funwork.api.sns.repository.LikeSnsRepository;
 import io.funwork.api.sns.repository.SnsRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,6 +51,9 @@ public class SnsServiceTest {
   @Mock
   CommentSnsRepository commentSnsRepository;
 
+  @Mock
+  LikeSnsRepository likeSnsRepository;
+
   Sns givenSns;
   Sns expectSns;
   Sns snsExpectFile;
@@ -57,16 +61,22 @@ public class SnsServiceTest {
   CommentSns givenCommentSns;
   CommentSns expectCommentSns;
 
+  LikeSns givenLikeSns;
+  LikeSns expectLikeSns;
+
   @Before
   public void setUp() {
     SnsFixture snsFixture = createSnsFixture();
     CommentSnsFixture commentSnsFixture = createCommentSnsFixture();
+    LikeSnsFixture likeSnsFixture = createLikeSnsFixture();
 
     givenSns = snsFixture.build();
     givenCommentSns = commentSnsFixture.build();
+    givenLikeSns = likeSnsFixture.build();
 
     expectSns = snsFixture.withId(1L).build();
     expectCommentSns = commentSnsFixture.withId(1L).build();
+    expectLikeSns = likeSnsFixture.withId(1L).build();
 
     snsExpectFile = createSnsFile();
 
@@ -134,19 +144,39 @@ public class SnsServiceTest {
   public void test_add_comment_sns() throws Exception{
 
     //given
-    CommentSnsCommand commentSnsCommand = createCommentSnsCommandFixture();
     Sns sns = new Sns();
     sns.setId(1L);
+
+    CommentSnsCommand commentSnsCommand = createCommentSnsCommandFixture();
     commentSnsCommand.setSns(sns);
     when(commentSnsRepository.save(any(CommentSns.class))).thenReturn(expectCommentSns);
 
     //when
-    List<CommentSns> saveCommentSns = snsService.saveCommentSns(commentSnsCommand);
+    CommentSns saveCommentSns = snsService.saveCommentSns(commentSnsCommand);
 
     //then
     verify(commentSnsRepository).save(any(CommentSns.class));
+    assertThat(saveCommentSns.getSns().getId(), is(1L));
 
-    //assertThat(saveCommentSns.get(0).getId(), is(expectCommentSns.getId()));
+  }
+
+  @Test
+  public void test_add_like_sns() throws Exception{
+
+    //given
+    Sns sns = new Sns();
+    sns.setId(1L);
+
+    LikeSnsCommand likeSnsCommand = createLikeSnsCommandFixture();
+    likeSnsCommand.setSns(sns);
+    when(likeSnsRepository.save(any(LikeSns.class))).thenReturn(expectLikeSns);
+
+    //when
+    LikeSns saveLikeSns = snsService.saveLikeSns(likeSnsCommand);
+
+    //then
+    verify(likeSnsRepository).save(any(LikeSns.class));
+    assertThat(saveLikeSns.getSns().getId(), is(1L));
 
   }
 
@@ -171,18 +201,23 @@ public class SnsServiceTest {
         ;
   }
 
+  private LikeSnsFixture createLikeSnsFixture() {
+    Sns sns = new Sns();
+    sns.setId(1L);
+    return LikeSnsFixture.anLikeSns()
+        .withId(1L)
+        .withCreateDate("2016-06-16")
+        .withPersonId("urosaria")
+        .withSns(sns)
+        ;
+  }
+
   private Sns createSnsFile() {
     SnsFixture fixture = createSnsFixture();
     Sns sns = fixture.withId(1L).withPersonId("urosaria").build();
     List<FileSns> fileSnsList = createFileSnsFixture(sns);
     sns.setFileSnsList(fileSnsList);
     return sns;
-  }
-
-  private CommentSns createCommentSnsFile() {
-    CommentSnsFixture fixture = createCommentSnsFixture();
-    CommentSns Commentsns = fixture.withId(1L).withPersonId("urosaria").build();
-    return Commentsns;
   }
 
   private List<FileSns> createFileSnsFixture(Sns sns) {
@@ -228,6 +263,20 @@ public class SnsServiceTest {
     commentSnsCommand.setSns(sns);
 
     return commentSnsCommand;
+  }
+
+  private LikeSnsCommand createLikeSnsCommandFixture() {
+    Sns sns = new Sns();
+    sns.setId(1L);
+
+    LikeSnsCommand likeSnsCommand = new LikeSnsCommand();
+    likeSnsCommand.setId(givenLikeSns.getId());
+    likeSnsCommand.setCreateDate(givenLikeSns.getCreateDate());
+    likeSnsCommand.setPersonId(givenLikeSns.getPersonId());
+    //commentSnsCommand.setFileSns(createFileSns());
+    likeSnsCommand.setSns(sns);
+
+    return likeSnsCommand;
   }
 
   private List<Sns> createSnsListFixture() {

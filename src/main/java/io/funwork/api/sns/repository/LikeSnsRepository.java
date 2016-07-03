@@ -3,10 +3,8 @@ package io.funwork.api.sns.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-import io.funwork.api.sns.domain.Sns;
+import io.funwork.api.sns.domain.LikeSns;
 
 @Repository
-public interface SnsRepository extends JpaRepository<Sns, Long> {
+public interface LikeSnsRepository extends JpaRepository<LikeSns, Long> {
 }
