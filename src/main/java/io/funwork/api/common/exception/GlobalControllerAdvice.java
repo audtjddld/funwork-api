@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
+public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {NotFoundPerson.class, NotFoundDepartment.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ResponseEntity<Object> handleNotFoundOrganization(Exception ex){
+    public ResponseEntity<Object> handleNotFoundOrganization(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

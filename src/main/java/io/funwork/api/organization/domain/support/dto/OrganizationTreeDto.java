@@ -1,11 +1,11 @@
 package io.funwork.api.organization.domain.support.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.funwork.api.organization.domain.Department;
 import io.funwork.api.organization.domain.Person;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class OrganizationTreeDto {

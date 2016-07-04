@@ -39,7 +39,7 @@ public class OrganizationControllerIntegrationTest {
     public void test_get_tree_by_person_id() throws Exception {
 
         given().contentType(CONTENT_TYPE)
-                .when().get(URI+"/tree/1")
+                .when().get(URI + "/tree/1")
                 .then().statusCode(HttpStatus.SC_OK).body(containsString("테스트1-1"));
     }
 
@@ -47,11 +47,10 @@ public class OrganizationControllerIntegrationTest {
     public void test_get_tree_by_person_but_person_is_null() throws Exception {
 
         given().contentType(CONTENT_TYPE)
-                .when().get(URI+"/tree/9999")
+                .when().get(URI + "/tree/9999")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST);
 
     }
-
 
 
 }

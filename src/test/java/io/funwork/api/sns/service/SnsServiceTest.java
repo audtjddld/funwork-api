@@ -1,5 +1,20 @@
 package io.funwork.api.sns.service;
 
+import io.funwork.api.sns.domain.CommentSns;
+import io.funwork.api.sns.domain.FileSns;
+import io.funwork.api.sns.domain.LikeSns;
+import io.funwork.api.sns.domain.Sns;
+import io.funwork.api.sns.domain.support.command.CommentSnsCommand;
+import io.funwork.api.sns.domain.support.command.LikeSnsCommand;
+import io.funwork.api.sns.domain.support.command.SnsCommand;
+import io.funwork.api.sns.fixture.CommentSnsFixture;
+import io.funwork.api.sns.fixture.LikeSnsFixture;
+import io.funwork.api.sns.fixture.SnsFixture;
+import io.funwork.api.sns.repository.CommentSnsRepository;
+import io.funwork.api.sns.repository.FileSnsRepository;
+import io.funwork.api.sns.repository.LikeSnsRepository;
+import io.funwork.api.sns.repository.SnsRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,22 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.funwork.api.sns.domain.CommentSns;
-import io.funwork.api.sns.domain.FileSns;
-import io.funwork.api.sns.domain.LikeSns;
-import io.funwork.api.sns.domain.Sns;
-import io.funwork.api.sns.domain.support.command.CommentSnsCommand;
-import io.funwork.api.sns.domain.support.command.LikeSnsCommand;
-import io.funwork.api.sns.domain.support.command.SnsCommand;
-import io.funwork.api.sns.fixture.LikeSnsFixture;
-import io.funwork.api.sns.fixture.SnsFixture;
-import io.funwork.api.sns.fixture.CommentSnsFixture;
-import io.funwork.api.sns.repository.CommentSnsRepository;
-import io.funwork.api.sns.repository.FileSnsRepository;
-import io.funwork.api.sns.repository.LikeSnsRepository;
-import io.funwork.api.sns.repository.SnsRepository;
-import lombok.extern.slf4j.Slf4j;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -39,296 +38,296 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles(profiles = "test")
 public class SnsServiceTest {
 
-  @InjectMocks
-  SnsService snsService = new SnsService();
+    @InjectMocks
+    SnsService snsService = new SnsService();
 
-  @Mock
-  SnsRepository snsRepository;
+    @Mock
+    SnsRepository snsRepository;
 
-  @Mock
-  FileSnsRepository fileSnsRepository;
+    @Mock
+    FileSnsRepository fileSnsRepository;
 
-  @Mock
-  CommentSnsRepository commentSnsRepository;
+    @Mock
+    CommentSnsRepository commentSnsRepository;
 
-  @Mock
-  LikeSnsRepository likeSnsRepository;
+    @Mock
+    LikeSnsRepository likeSnsRepository;
 
-  Sns givenSns;
-  Sns expectSns;
-  Sns snsExpectFile;
+    Sns givenSns;
+    Sns expectSns;
+    Sns snsExpectFile;
 
-  CommentSns givenCommentSns;
-  CommentSns expectCommentSns;
+    CommentSns givenCommentSns;
+    CommentSns expectCommentSns;
 
-  LikeSns givenLikeSns;
-  LikeSns expectLikeSns;
+    LikeSns givenLikeSns;
+    LikeSns expectLikeSns;
 
-  @Before
-  public void setUp() {
-    SnsFixture snsFixture = createSnsFixture();
-    CommentSnsFixture commentSnsFixture = createCommentSnsFixture();
-    LikeSnsFixture likeSnsFixture = createLikeSnsFixture();
+    @Before
+    public void setUp() {
+        SnsFixture snsFixture = createSnsFixture();
+        CommentSnsFixture commentSnsFixture = createCommentSnsFixture();
+        LikeSnsFixture likeSnsFixture = createLikeSnsFixture();
 
-    givenSns = snsFixture.build();
-    givenCommentSns = commentSnsFixture.build();
-    givenLikeSns = likeSnsFixture.build();
+        givenSns = snsFixture.build();
+        givenCommentSns = commentSnsFixture.build();
+        givenLikeSns = likeSnsFixture.build();
 
-    expectSns = snsFixture.withId(1L).build();
-    expectCommentSns = commentSnsFixture.withId(1L).build();
-    expectLikeSns = likeSnsFixture.withId(1L).build();
+        expectSns = snsFixture.withId(1L).build();
+        expectCommentSns = commentSnsFixture.withId(1L).build();
+        expectLikeSns = likeSnsFixture.withId(1L).build();
 
-    snsExpectFile = createSnsFile();
-
-
-  }
-
-  @Test
-  public void test_mock_sns_service() throws Exception {
-    assertNotNull(snsService);
-  }
-
-  @Test
-  public void test_getlist_by_person() throws Exception {
-
-    //given
-    when(snsRepository.findAll()).thenReturn(createSnsListFixture());
-
-    //when
-    List<Sns> snsList = snsService.getSnsList();
-
-    //then
-    log.info(snsList.toString());
-    verify(snsRepository).findAll();
-
-    assertThat(snsList.get(0).getContents(), is("testest"));
-    //첨부파일 체크
-    assertThat(snsList.get(0).getFileSnsList().get(0).getFileNm(), is("test.jpg"));
-    assertThat(snsList.get(0).getFileSnsList().get(1).getFileNm(), is("test2.jpg"));
-    //댓글 체크
-    assertThat(snsList.get(0).getCommentSnsList().get(1).getContents(), is("댓글2"));
-  }
+        snsExpectFile = createSnsFile();
 
 
-  @Test
-  public void test_add_sns() throws Exception {
+    }
 
-    //given
-    SnsCommand snsCommand = createSnsCommandFixture();
-    when(snsRepository.save(givenSns)).thenReturn(expectSns);
+    @Test
+    public void test_mock_sns_service() throws Exception {
+        assertNotNull(snsService);
+    }
 
-    Sns sns = new Sns();
-    sns.setId(1L);
+    @Test
+    public void test_getlist_by_person() throws Exception {
 
-    FileSns expectFileSns = new FileSns();
-    expectFileSns.setId(1L);
-    expectFileSns.setFileOrder(1);
-    expectFileSns.setPath("/test/test/");
-    expectFileSns.setFileNm("test.jpg");
-    expectFileSns.setSns(sns);
+        //given
+        when(snsRepository.findAll()).thenReturn(createSnsListFixture());
 
-    when(fileSnsRepository.save(any(FileSns.class))).thenReturn(expectFileSns);
+        //when
+        List<Sns> snsList = snsService.getSnsList();
 
-    //when
-    Sns saveSns = snsService.saveSns(snsCommand);
-    log.info(saveSns.toString());
+        //then
+        log.info(snsList.toString());
+        verify(snsRepository).findAll();
 
-    //then
-    verify(fileSnsRepository).save(any(FileSns.class));
-    assertThat(saveSns.getId(), is(expectSns.getId()));
-    assertThat(saveSns.getFileSnsList().get(0).getFileNm(), is("test.jpg"));
+        assertThat(snsList.get(0).getContents(), is("testest"));
+        //첨부파일 체크
+        assertThat(snsList.get(0).getFileSnsList().get(0).getFileNm(), is("test.jpg"));
+        assertThat(snsList.get(0).getFileSnsList().get(1).getFileNm(), is("test2.jpg"));
+        //댓글 체크
+        assertThat(snsList.get(0).getCommentSnsList().get(1).getContents(), is("댓글2"));
+    }
 
-  }
 
-  @Test
-  public void test_add_comment_sns() throws Exception{
+    @Test
+    public void test_add_sns() throws Exception {
 
-    //given
-    Sns sns = new Sns();
-    sns.setId(1L);
+        //given
+        SnsCommand snsCommand = createSnsCommandFixture();
+        when(snsRepository.save(givenSns)).thenReturn(expectSns);
 
-    CommentSnsCommand commentSnsCommand = createCommentSnsCommandFixture();
-    commentSnsCommand.setSns(sns);
-    when(commentSnsRepository.save(any(CommentSns.class))).thenReturn(expectCommentSns);
+        Sns sns = new Sns();
+        sns.setId(1L);
 
-    //when
-    CommentSns saveCommentSns = snsService.saveCommentSns(commentSnsCommand);
+        FileSns expectFileSns = new FileSns();
+        expectFileSns.setId(1L);
+        expectFileSns.setFileOrder(1);
+        expectFileSns.setPath("/test/test/");
+        expectFileSns.setFileNm("test.jpg");
+        expectFileSns.setSns(sns);
 
-    //then
-    verify(commentSnsRepository).save(any(CommentSns.class));
-    assertThat(saveCommentSns.getSns().getId(), is(1L));
+        when(fileSnsRepository.save(any(FileSns.class))).thenReturn(expectFileSns);
 
-  }
+        //when
+        Sns saveSns = snsService.saveSns(snsCommand);
+        log.info(saveSns.toString());
 
-  @Test
-  public void test_add_like_sns() throws Exception{
+        //then
+        verify(fileSnsRepository).save(any(FileSns.class));
+        assertThat(saveSns.getId(), is(expectSns.getId()));
+        assertThat(saveSns.getFileSnsList().get(0).getFileNm(), is("test.jpg"));
 
-    //given
-    Sns sns = new Sns();
-    sns.setId(1L);
+    }
 
-    LikeSnsCommand likeSnsCommand = createLikeSnsCommandFixture();
-    likeSnsCommand.setSns(sns);
-    when(likeSnsRepository.save(any(LikeSns.class))).thenReturn(expectLikeSns);
+    @Test
+    public void test_add_comment_sns() throws Exception {
 
-    //when
-    LikeSns saveLikeSns = snsService.saveLikeSns(likeSnsCommand);
+        //given
+        Sns sns = new Sns();
+        sns.setId(1L);
 
-    //then
-    verify(likeSnsRepository).save(any(LikeSns.class));
-    assertThat(saveLikeSns.getSns().getId(), is(1L));
+        CommentSnsCommand commentSnsCommand = createCommentSnsCommandFixture();
+        commentSnsCommand.setSns(sns);
+        when(commentSnsRepository.save(any(CommentSns.class))).thenReturn(expectCommentSns);
 
-  }
+        //when
+        CommentSns saveCommentSns = snsService.saveCommentSns(commentSnsCommand);
 
-  private SnsFixture createSnsFixture() {
-    return SnsFixture.anSns()
-        .withId(1L)
-        .withContents("안녕하세요..")
-        .withCreateDate("2016-06-16")
-        .withPersonId("urosaria")
-        ;
-  }
+        //then
+        verify(commentSnsRepository).save(any(CommentSns.class));
+        assertThat(saveCommentSns.getSns().getId(), is(1L));
 
-  private CommentSnsFixture createCommentSnsFixture() {
-    Sns sns = new Sns();
-    sns.setId(1L);
-    return CommentSnsFixture.anCommentSns()
-        .withId(1L)
-        .withContents("댓글1")
-        .withCreateDate("2016-06-16")
-        .withPersonId("urosaria")
-        .withSns(sns)
-        ;
-  }
+    }
 
-  private LikeSnsFixture createLikeSnsFixture() {
-    Sns sns = new Sns();
-    sns.setId(1L);
-    return LikeSnsFixture.anLikeSns()
-        .withId(1L)
-        .withCreateDate("2016-06-16")
-        .withPersonId("urosaria")
-        .withSns(sns)
-        ;
-  }
+    @Test
+    public void test_add_like_sns() throws Exception {
 
-  private Sns createSnsFile() {
-    SnsFixture fixture = createSnsFixture();
-    Sns sns = fixture.withId(1L).withPersonId("urosaria").build();
-    List<FileSns> fileSnsList = createFileSnsFixture(sns);
-    sns.setFileSnsList(fileSnsList);
-    return sns;
-  }
+        //given
+        Sns sns = new Sns();
+        sns.setId(1L);
 
-  private List<FileSns> createFileSnsFixture(Sns sns) {
-    FileSns fileSns = new FileSns();
-    fileSns.setId(1L);
-    fileSns.setPath("/test/test/");
-    fileSns.setFileNm("test.jpg");
-    fileSns.setSns(sns);
+        LikeSnsCommand likeSnsCommand = createLikeSnsCommandFixture();
+        likeSnsCommand.setSns(sns);
+        when(likeSnsRepository.save(any(LikeSns.class))).thenReturn(expectLikeSns);
 
-    List<FileSns> fileSnsSnsList = new ArrayList<>();
-    fileSnsSnsList.add(fileSns);
-    return fileSnsSnsList;
-  }
+        //when
+        LikeSns saveLikeSns = snsService.saveLikeSns(likeSnsCommand);
 
-  private FileSns createFileSns() {
-    FileSns fileSns = new FileSns();
-    fileSns.setId(1L);
-    fileSns.setPath("/test/test/");
-    fileSns.setFileNm("test.jpg");
-    return fileSns;
-  }
+        //then
+        verify(likeSnsRepository).save(any(LikeSns.class));
+        assertThat(saveLikeSns.getSns().getId(), is(1L));
 
-  private SnsCommand createSnsCommandFixture() {
-    SnsCommand snsCommand = new SnsCommand();
-    snsCommand.setId(givenSns.getId());
-    snsCommand.setContents(givenSns.getContents());
-    snsCommand.setCreateDate(givenSns.getCreateDate());
-    snsCommand.setPersonId(givenSns.getPersonId());
-    snsCommand.setFileSns(createFileSns());
-    return snsCommand;
-  }
+    }
 
-  private CommentSnsCommand createCommentSnsCommandFixture() {
-    Sns sns = new Sns();
-    sns.setId(1L);
+    private SnsFixture createSnsFixture() {
+        return SnsFixture.anSns()
+                .withId(1L)
+                .withContents("안녕하세요..")
+                .withCreateDate("2016-06-16")
+                .withPersonId("urosaria")
+                ;
+    }
 
-    CommentSnsCommand commentSnsCommand = new CommentSnsCommand();
-    commentSnsCommand.setId(givenCommentSns.getId());
-    commentSnsCommand.setContents(givenCommentSns.getContents());
-    commentSnsCommand.setCreateDate(givenCommentSns.getCreateDate());
-    commentSnsCommand.setPersonId(givenCommentSns.getPersonId());
-    //commentSnsCommand.setFileSns(createFileSns());
-    commentSnsCommand.setSns(sns);
+    private CommentSnsFixture createCommentSnsFixture() {
+        Sns sns = new Sns();
+        sns.setId(1L);
+        return CommentSnsFixture.anCommentSns()
+                .withId(1L)
+                .withContents("댓글1")
+                .withCreateDate("2016-06-16")
+                .withPersonId("urosaria")
+                .withSns(sns)
+                ;
+    }
 
-    return commentSnsCommand;
-  }
+    private LikeSnsFixture createLikeSnsFixture() {
+        Sns sns = new Sns();
+        sns.setId(1L);
+        return LikeSnsFixture.anLikeSns()
+                .withId(1L)
+                .withCreateDate("2016-06-16")
+                .withPersonId("urosaria")
+                .withSns(sns)
+                ;
+    }
 
-  private LikeSnsCommand createLikeSnsCommandFixture() {
-    Sns sns = new Sns();
-    sns.setId(1L);
+    private Sns createSnsFile() {
+        SnsFixture fixture = createSnsFixture();
+        Sns sns = fixture.withId(1L).withPersonId("urosaria").build();
+        List<FileSns> fileSnsList = createFileSnsFixture(sns);
+        sns.setFileSnsList(fileSnsList);
+        return sns;
+    }
 
-    LikeSnsCommand likeSnsCommand = new LikeSnsCommand();
-    likeSnsCommand.setId(givenLikeSns.getId());
-    likeSnsCommand.setCreateDate(givenLikeSns.getCreateDate());
-    likeSnsCommand.setPersonId(givenLikeSns.getPersonId());
-    //commentSnsCommand.setFileSns(createFileSns());
-    likeSnsCommand.setSns(sns);
+    private List<FileSns> createFileSnsFixture(Sns sns) {
+        FileSns fileSns = new FileSns();
+        fileSns.setId(1L);
+        fileSns.setPath("/test/test/");
+        fileSns.setFileNm("test.jpg");
+        fileSns.setSns(sns);
 
-    return likeSnsCommand;
-  }
+        List<FileSns> fileSnsSnsList = new ArrayList<>();
+        fileSnsSnsList.add(fileSns);
+        return fileSnsSnsList;
+    }
 
-  private List<Sns> createSnsListFixture() {
-    Sns sns1 = new Sns();
-    FileSns fileSns = new FileSns();
-    FileSns fileSns2 = new FileSns();
+    private FileSns createFileSns() {
+        FileSns fileSns = new FileSns();
+        fileSns.setId(1L);
+        fileSns.setPath("/test/test/");
+        fileSns.setFileNm("test.jpg");
+        return fileSns;
+    }
 
-    CommentSns commentSns = new CommentSns();
-    CommentSns commentSns2 = new CommentSns();
+    private SnsCommand createSnsCommandFixture() {
+        SnsCommand snsCommand = new SnsCommand();
+        snsCommand.setId(givenSns.getId());
+        snsCommand.setContents(givenSns.getContents());
+        snsCommand.setCreateDate(givenSns.getCreateDate());
+        snsCommand.setPersonId(givenSns.getPersonId());
+        snsCommand.setFileSns(createFileSns());
+        return snsCommand;
+    }
 
-    sns1.setId(1L);
-    sns1.setContents("testest");
-    sns1.setCreateDate("2016-06-16");
-    sns1.setPersonId("urosaria");
+    private CommentSnsCommand createCommentSnsCommandFixture() {
+        Sns sns = new Sns();
+        sns.setId(1L);
 
-    fileSns.setFileNm("test.jpg");
-    fileSns.setPath("/test/test/");
-    fileSns.setSns(sns1);
-    fileSns.setFileOrder(1);
-    fileSns.setId(1L);
+        CommentSnsCommand commentSnsCommand = new CommentSnsCommand();
+        commentSnsCommand.setId(givenCommentSns.getId());
+        commentSnsCommand.setContents(givenCommentSns.getContents());
+        commentSnsCommand.setCreateDate(givenCommentSns.getCreateDate());
+        commentSnsCommand.setPersonId(givenCommentSns.getPersonId());
+        //commentSnsCommand.setFileSns(createFileSns());
+        commentSnsCommand.setSns(sns);
 
-    fileSns2.setFileNm("test2.jpg");
-    fileSns2.setPath("/test/test/");
-    fileSns2.setSns(sns1);
-    fileSns2.setFileOrder(2);
-    fileSns2.setId(2L);
+        return commentSnsCommand;
+    }
 
-    commentSns.setContents("댓글1");
-    commentSns.setCreateDate("2016-06-26");
-    commentSns.setId(1L);
-    commentSns.setPersonId("urosaria");
-    commentSns.setUseYn("Y");
-    commentSns.setSns(sns1);
+    private LikeSnsCommand createLikeSnsCommandFixture() {
+        Sns sns = new Sns();
+        sns.setId(1L);
 
-    commentSns2.setContents("댓글2");
-    commentSns2.setCreateDate("2016-06-26");
-    commentSns2.setId(2L);
-    commentSns2.setPersonId("test");
-    commentSns2.setUseYn("Y");
-    commentSns2.setSns(sns1);
+        LikeSnsCommand likeSnsCommand = new LikeSnsCommand();
+        likeSnsCommand.setId(givenLikeSns.getId());
+        likeSnsCommand.setCreateDate(givenLikeSns.getCreateDate());
+        likeSnsCommand.setPersonId(givenLikeSns.getPersonId());
+        //commentSnsCommand.setFileSns(createFileSns());
+        likeSnsCommand.setSns(sns);
 
-    List<Sns> snsList = new ArrayList<>();
-    List<FileSns> fileSnsList = new ArrayList<>();
-    List<CommentSns> commentSnsList = new ArrayList<>();
-    fileSnsList.add(0,fileSns);
-    fileSnsList.add(1,fileSns2);
-    commentSnsList.add(0,commentSns);
-    commentSnsList.add(1,commentSns2);
-    sns1.setFileSnsList(fileSnsList);
-    sns1.setCommentSnsList(commentSnsList);
-    snsList.add(0,sns1);
-    return snsList;
-  }
+        return likeSnsCommand;
+    }
+
+    private List<Sns> createSnsListFixture() {
+        Sns sns1 = new Sns();
+        FileSns fileSns = new FileSns();
+        FileSns fileSns2 = new FileSns();
+
+        CommentSns commentSns = new CommentSns();
+        CommentSns commentSns2 = new CommentSns();
+
+        sns1.setId(1L);
+        sns1.setContents("testest");
+        sns1.setCreateDate("2016-06-16");
+        sns1.setPersonId("urosaria");
+
+        fileSns.setFileNm("test.jpg");
+        fileSns.setPath("/test/test/");
+        fileSns.setSns(sns1);
+        fileSns.setFileOrder(1);
+        fileSns.setId(1L);
+
+        fileSns2.setFileNm("test2.jpg");
+        fileSns2.setPath("/test/test/");
+        fileSns2.setSns(sns1);
+        fileSns2.setFileOrder(2);
+        fileSns2.setId(2L);
+
+        commentSns.setContents("댓글1");
+        commentSns.setCreateDate("2016-06-26");
+        commentSns.setId(1L);
+        commentSns.setPersonId("urosaria");
+        commentSns.setUseYn("Y");
+        commentSns.setSns(sns1);
+
+        commentSns2.setContents("댓글2");
+        commentSns2.setCreateDate("2016-06-26");
+        commentSns2.setId(2L);
+        commentSns2.setPersonId("test");
+        commentSns2.setUseYn("Y");
+        commentSns2.setSns(sns1);
+
+        List<Sns> snsList = new ArrayList<>();
+        List<FileSns> fileSnsList = new ArrayList<>();
+        List<CommentSns> commentSnsList = new ArrayList<>();
+        fileSnsList.add(0, fileSns);
+        fileSnsList.add(1, fileSns2);
+        commentSnsList.add(0, commentSns);
+        commentSnsList.add(1, commentSns2);
+        sns1.setFileSnsList(fileSnsList);
+        sns1.setCommentSnsList(commentSnsList);
+        snsList.add(0, sns1);
+        return snsList;
+    }
 
 }

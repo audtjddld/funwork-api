@@ -6,16 +6,16 @@ import lombok.Data;
 @Data
 public class CommentSnsCommand {
 
-  private Long id;
+    private Long id;
 
-  private String createDate;
+    private String createDate;
 
-  private String contents;
+    private String contents;
 
-  private String personId;
+    private String personId;
 
-  private Long snsId;
+    private Long snsId;
 
-  private Sns sns;
+    private Sns sns;
 
 }

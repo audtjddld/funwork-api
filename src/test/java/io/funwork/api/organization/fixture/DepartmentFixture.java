@@ -48,7 +48,7 @@ public class DepartmentFixture {
         department.setName(this.name);
         department.setParentDept(this.parentDept);
         department.setUseYn(this.useYn);
-        if(childDept.size() > 0)
+        if (childDept.size() > 0)
             department.setChildDept(childDept);
         return department;
     }

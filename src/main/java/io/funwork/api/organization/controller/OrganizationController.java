@@ -19,7 +19,7 @@ public class OrganizationController {
     @RequestMapping("/tree/{id}")
     public ResponseEntity tree(@PathVariable Long id) {
         OrganizationTreeDto tree = organizationService.getTreeByPerson(id);
-        if( tree != null) {
+        if (tree != null) {
             return new ResponseEntity<>(tree, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

@@ -9,7 +9,6 @@ import io.funwork.api.organization.exception.NotFoundDepartment;
 import io.funwork.api.organization.exception.NotFoundPerson;
 import io.funwork.api.organization.repository.DepartmentPersonRepository;
 import io.funwork.api.organization.repository.PersonRepository;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,9 +48,9 @@ public class OrganizationService {
     public OrganizationTreeDto getTreeByPerson(Long id) {
 
         Person person = personRepository.findOne(id);
-        if(person == null) throw new NotFoundPerson();
+        if (person == null) throw new NotFoundPerson();
         Department department = getDepartmentByPerson(person);
-        if(department == null) throw new NotFoundDepartment();
+        if (department == null) throw new NotFoundDepartment();
         OrganizationTreeDto tree = makeTree(department, null);
         return tree;
     }

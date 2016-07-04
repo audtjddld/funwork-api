@@ -1,23 +1,18 @@
 package io.funwork.api.organization.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import io.funwork.api.organization.domain.support.command.PersonCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
+
 @NoArgsConstructor
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class DepartmentPerson {
 
-    public DepartmentPerson(Person person, Department department){
+    public DepartmentPerson(Person person, Department department) {
         this.person = person;
         this.department = department;
     }

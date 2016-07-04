@@ -1,5 +1,12 @@
 package io.funwork.api.organization.repository;
 
+import io.funwork.FunworkApiApplicationTests;
+import io.funwork.api.organization.domain.Department;
+import io.funwork.api.organization.domain.DepartmentPerson;
+import io.funwork.api.organization.domain.Person;
+import io.funwork.api.organization.domain.SecurityGrade;
+import io.funwork.api.organization.fixture.DepartmentFixture;
+import io.funwork.api.organization.fixture.PersonFixture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,14 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import io.funwork.FunworkApiApplicationTests;
-import io.funwork.api.organization.domain.Department;
-import io.funwork.api.organization.domain.DepartmentPerson;
-import io.funwork.api.organization.domain.Person;
-import io.funwork.api.organization.domain.SecurityGrade;
-import io.funwork.api.organization.fixture.DepartmentFixture;
-import io.funwork.api.organization.fixture.PersonFixture;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -47,13 +46,13 @@ public class OrganizationIntegrationTest {
         parentDept = createParentDept();
         childDept = createChildDept();
         person = createPersonFixture()
-            .withEmail("test@funwork.com")
-            .withName("테스트")
-            .build();
+                .withEmail("test@funwork.com")
+                .withName("테스트")
+                .build();
         person2 = createPersonFixture()
-            .withEmail("test2@funwork.com")
-            .withName("테스트2")
-            .build();
+                .withEmail("test2@funwork.com")
+                .withName("테스트2")
+                .build();
     }
 
     @Test
@@ -128,7 +127,7 @@ public class OrganizationIntegrationTest {
         List<DepartmentPerson> departmentPersons = newPerson.getDepartmentPersons();
 
         //when
-        if(departmentPersons.size() > 0)
+        if (departmentPersons.size() > 0)
             newDepartment = departmentPersons.get(0).getDepartment();
 
         //then
@@ -155,7 +154,7 @@ public class OrganizationIntegrationTest {
 
     private List<DepartmentPerson> getDepartmentPerson(Department saveChildDept) {
         return departmentRepository
-            .findOne(saveChildDept.getId()).getDepartmentPersons();
+                .findOne(saveChildDept.getId()).getDepartmentPersons();
     }
 
     private DepartmentPerson saveDepartmentPerson(Department saveChildDept, Person savePerson) {
@@ -168,22 +167,22 @@ public class OrganizationIntegrationTest {
 
     private Department createParentDept() {
         return DepartmentFixture.anDepartment()
-            .withName("테스트1")
-            .withUseYn("Y")
-            .build();
+                .withName("테스트1")
+                .withUseYn("Y")
+                .build();
     }
 
     private Department createChildDept() {
         return DepartmentFixture.anDepartment()
-            .withName("테스트1-1")
-            .withUseYn("Y")
-            .build();
+                .withName("테스트1-1")
+                .withUseYn("Y")
+                .build();
     }
 
     private PersonFixture createPersonFixture() {
         return PersonFixture.anPerson()
-            .withPasswd("test1234!")
-            .withPosition("사원")
-            .withSecurityGrade(SecurityGrade.NORMAL);
+                .withPasswd("test1234!")
+                .withPosition("사원")
+                .withSecurityGrade(SecurityGrade.NORMAL);
     }
 }

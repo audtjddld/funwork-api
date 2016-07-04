@@ -1,19 +1,14 @@
 package io.funwork.api.organization.domain;
 
+import io.funwork.api.organization.domain.support.command.PersonCommand;
+import lombok.Data;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import io.funwork.api.organization.domain.support.command.PersonCommand;
-import lombok.Data;
 
 @Entity
 @Data
@@ -46,7 +41,7 @@ public class Person implements Serializable {
     private List<DepartmentPerson> departmentPersons = new ArrayList<>();
 
     public void addDepartment(DepartmentPerson departmentPerson) {
-        if(isNotBelongDepartment(departmentPerson)) {
+        if (isNotBelongDepartment(departmentPerson)) {
             this.departmentPersons.add(departmentPerson);
         }
     }

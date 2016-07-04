@@ -1,10 +1,9 @@
 package io.funwork;
 
+import io.funwork.api.FunworkApiApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-
-import io.funwork.api.FunworkApiApplication;
 
 @SpringBootApplication
 @EnableConfigurationProperties
