@@ -74,7 +74,7 @@ public class SnsIntegrationTest {
 
         //given
         //when
-        Sns saveSns = saveSns();
+        Sns saveSns = saveSns(sns);
 
         FileSns fileSns = saveFileSns(saveSns);
 
@@ -89,7 +89,7 @@ public class SnsIntegrationTest {
 
         //given
         //when
-        Sns saveSns = saveSns();
+        Sns saveSns = saveSns(sns);
 
         CommentSns saveCommentSns = saveCommentSns(saveSns);
 
@@ -104,7 +104,7 @@ public class SnsIntegrationTest {
 
         //given
         //when
-        Sns saveSns = saveSns();
+        Sns saveSns = saveSns(sns);
 
         LikeSns saveLikeSns = saveLikeSns(saveSns);
 
@@ -158,7 +158,7 @@ public class SnsIntegrationTest {
                 ;
     }
 
-    private Sns saveSns() {
+    private Sns saveSns(Sns sns) {
         return snsRepository.save(sns);
     }
 

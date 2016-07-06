@@ -10,6 +10,7 @@ import io.funwork.api.sns.service.SnsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +37,16 @@ public class SnsController {
         Sns snsAdd = snsService.saveSns(snsCommand);
         if (snsAdd != null) {
             return new ResponseEntity<>(snsAdd, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping("/update/{id}")
+    public ResponseEntity update(@PathVariable Long id, SnsCommand snsCommand) {
+        snsCommand.setId(id);
+        Sns snsUpdate = snsService.saveSns(snsCommand);
+        if (snsUpdate != null) {
+            return new ResponseEntity<>(snsUpdate, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }

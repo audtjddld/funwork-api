@@ -66,6 +66,7 @@ public class SnsServiceTest {
     @Before
     public void setUp() {
         SnsFixture snsFixture = createSnsFixture();
+
         CommentSnsFixture commentSnsFixture = createCommentSnsFixture();
         LikeSnsFixture likeSnsFixture = createLikeSnsFixture();
 
@@ -106,8 +107,9 @@ public class SnsServiceTest {
         assertThat(snsList.get(0).getFileSnsList().get(1).getFileNm(), is("test2.jpg"));
         //댓글 체크
         assertThat(snsList.get(0).getCommentSnsList().get(1).getContents(), is("댓글2"));
+        //좋아요 체크
+        assertThat(snsList.get(0).getLikeSnsList().get(0).getCreateDate(), is("2016-07-04"));
     }
-
 
     @Test
     public void test_add_sns() throws Exception {
@@ -130,7 +132,6 @@ public class SnsServiceTest {
 
         //when
         Sns saveSns = snsService.saveSns(snsCommand);
-        log.info(saveSns.toString());
 
         //then
         verify(fileSnsRepository).save(any(FileSns.class));
@@ -183,6 +184,15 @@ public class SnsServiceTest {
         return SnsFixture.anSns()
                 .withId(1L)
                 .withContents("안녕하세요..")
+                .withCreateDate("2016-06-16")
+                .withPersonId("urosaria")
+                ;
+    }
+
+    private SnsFixture updateSnsFixture() {
+        return SnsFixture.anSns()
+                .withId(1L)
+                .withContents("안녕하세요..수정을합니다.")
                 .withCreateDate("2016-06-16")
                 .withPersonId("urosaria")
                 ;
@@ -285,6 +295,7 @@ public class SnsServiceTest {
 
         CommentSns commentSns = new CommentSns();
         CommentSns commentSns2 = new CommentSns();
+        LikeSns likeSns = new LikeSns();
 
         sns1.setId(1L);
         sns1.setContents("testest");
@@ -317,15 +328,23 @@ public class SnsServiceTest {
         commentSns2.setUseYn("Y");
         commentSns2.setSns(sns1);
 
+        likeSns.setCreateDate("2016-07-04");
+        likeSns.setSns(sns1);
+        likeSns.setPersonId("urosaria");
+
         List<Sns> snsList = new ArrayList<>();
         List<FileSns> fileSnsList = new ArrayList<>();
         List<CommentSns> commentSnsList = new ArrayList<>();
+        List<LikeSns> likeSnsList = new ArrayList<>();
+
         fileSnsList.add(0, fileSns);
         fileSnsList.add(1, fileSns2);
         commentSnsList.add(0, commentSns);
         commentSnsList.add(1, commentSns2);
+        likeSnsList.add(0, likeSns);
         sns1.setFileSnsList(fileSnsList);
         sns1.setCommentSnsList(commentSnsList);
+        sns1.setLikeSnsList(likeSnsList);
         snsList.add(0, sns1);
         return snsList;
     }
